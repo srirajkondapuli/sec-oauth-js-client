@@ -1,0 +1,86 @@
+{
+  "name": "sec-oauth-js-client",
+  "version": "1.0.0",
+  "description": "A general purpose OAuth client.",
+  "author": "The OpenID Foundation",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srirajkondapuli/sec-oauth-js-client.git"
+  },
+  "bugs": {
+    "url": "https://github.com/srirajkondapuli/sec-oauth-js-client/issues"
+  },
+  "files": [
+    "src/**",
+    "app/**",
+    "lib/**"
+  ],
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "copy": "cp src/*.json ./lib/",
+    "dev": "NODE_ENV=development nodemon ./lib/node_app/index.js",
+    "sample-dev": "npm run-script compile && npm run-script copy && NODE_ENV=development nodemon ./lib/node_app/index.js",
+    "preapp": "npm run-script --silent watch",
+    "app": "node_modules/.bin/watchify lib/app/index.js -o lib/app/bundle.js & http-server -p 8000",
+    "sample-app": "node_modules/.bin/watchify lib/app/index.js -o lib/app/bundle.js & http-server -p 8000",
+    "prenode-app": "npm run-script --silent compile",
+    "node-app": "node ./lib/node_app/index.js",
+    "sample-node-app": "node ./lib/sample/node_app/index.js",
+    "prebuild-app": "npm run-script --silent compile",
+    "build-app": "npm run copy && node_modules/.bin/browserify lib/app/index.js -o lib/app/bundle.js",
+    "sample-build-app": "node_modules/.bin/browserify lib/sample/app/index.js -o lib/sample/app/bundle.js",
+    "preminify": "npm run-script --silent build-app",
+    "minify": "java -jar node_modules/google-closure-compiler/compiler.jar --js lib/app/bundle.js --js_output_file lib/app/bundle_minified.js",
+    "precompile": "npm run-script --silent clean && npm run-script --silent format",
+    "compile": "node_modules/.bin/tsc",
+    "sample-compile": "node_modules/.bin/tsc && npm run-script copy",
+    "prepare": "npm run-script --silent build-app",
+    "format": "node_modules/.bin/clang-format -i -style=file --glob=src/**.ts",
+    "clean": "rm -rf lib",
+    "pretest": "npm run-script --silent compile",
+    "test": "node_modules/.bin/karma start karma.conf --browsers=Chrome --single-run=false --debug",
+    "pregzipSize": "npm run-script --silent minify",
+    "gzipSize": "gzip -c lib/app/bundle_minified.js | wc -c",
+    "prewatch": "npm run-script --silent format",
+    "watch": "node_modules/.bin/tsc --watch &"
+  },
+  "keywords": [
+    "OAuth",
+    "AppAuth",
+    "JavaScript",
+    "Node"
+  ],
+  "devDependencies": {
+    "@types/config": "^0.0.39",
+    "@types/dotenv": "^8.2.0",
+    "@types/hapi": "^18.0.5",
+    "@types/jasmine": "^3.6.9",
+    "@types/node": "^14.14.41",
+    "@types/opener": "^1.4.0",
+    "@types/react": "^17.0.3",
+    "@types/react-dom": "^17.0.3",
+    "browserify": "^17.0.0",
+    "clang-format": "^1.5.0",
+    "google-closure-compiler": "^20210406.0.0",
+    "http-server": "^0.12.3",
+    "jasmine-core": "^3.7.1",
+    "karma": "^6.3.2",
+    "karma-browserify": "^8.0.0",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-jasmine": "^4.0.1",
+    "typescript": "^4.2.4",
+    "watchify": "^4.0.0"
+  },
+  "dependencies": {
+    "@types/base64-js": "^1.3.0",
+    "@types/jquery": "^3.5.5",
+    "base64-js": "^1.5.1",
+    "config": "^3.3.6",
+    "dotenv": "^10.0.0",
+    "follow-redirects": "^1.13.3",
+    "form-data": "^4.0.0",
+    "opener": "^1.5.2"
+  }
+}
